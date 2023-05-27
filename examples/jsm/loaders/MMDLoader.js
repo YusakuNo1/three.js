@@ -109,7 +109,7 @@ class MMDLoader extends Loader {
 	 * @param {function} onProgress
 	 * @param {function} onError
 	 */
-	load( url, onLoad, onProgress, onError ) {
+	load( url, modelExtension, onLoad, onProgress, onError ) {
 
 		const builder = this.meshBuilder.setCrossOrigin( this.crossOrigin );
 
@@ -131,7 +131,7 @@ class MMDLoader extends Loader {
 
 		}
 
-		const modelExtension = this._extractExtension( url ).toLowerCase();
+		modelExtension = modelExtension ?? this._extractExtension( url ).toLowerCase();
 
 		// Should I detect by seeing header?
 		if ( modelExtension !== 'pmd' && modelExtension !== 'pmx' ) {
