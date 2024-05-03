@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const REVISION = '164';
+const REVISION = '165dev';
 
 const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
 const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
@@ -743,8 +743,12 @@ class Vector2 {
 
 	copy( v ) {
 
-		this.x = v.x;
-		this.y = v.y;
+		if ( v && v.isVector2 ) {
+
+			this.x = v.x;
+			this.y = v.y;
+
+		}
 
 		return this;
 
@@ -6815,12 +6819,16 @@ class Euler {
 
 	copy( euler ) {
 
-		this._x = euler._x;
-		this._y = euler._y;
-		this._z = euler._z;
-		this._order = euler._order;
+		if ( euler !== undefined ) {
 
-		this._onChangeCallback();
+			this._x = euler._x;
+			this._y = euler._y;
+			this._z = euler._z;
+			this._order = euler._order;
+
+			this._onChangeCallback();
+
+		}
 
 		return this;
 
@@ -8718,9 +8726,13 @@ class Color {
 
 	copy( color ) {
 
-		this.r = color.r;
-		this.g = color.g;
-		this.b = color.b;
+		if ( color && color.isColor ) {
+
+			this.r = color.r;
+			this.g = color.g;
+			this.b = color.b;
+
+		}
 
 		return this;
 
@@ -17322,7 +17334,7 @@ function WebGLExtensions( gl ) {
 
 			if ( extension === null ) {
 
-				console.warn( 'THREE.WebGLRenderer: ' + name + ' extension not supported.' );
+				warnOnce( 'THREE.WebGLRenderer: ' + name + ' extension not supported.' );
 
 			}
 
@@ -43503,6 +43515,10 @@ class FileLoader extends Loader {
 
 									}
 
+								}, ( e ) => {
+
+									controller.error( e );
+
 								} );
 
 							}
@@ -50996,13 +51012,15 @@ function ascSort( a, b ) {
 
 function intersect( object, raycaster, intersects, recursive ) {
 
+	let stopTraversal = false;
+
 	if ( object.layers.test( raycaster.layers ) ) {
 
-		object.raycast( raycaster, intersects );
+		stopTraversal = object.raycast( raycaster, intersects );
 
 	}
 
-	if ( recursive === true ) {
+	if ( recursive === true && stopTraversal !== true ) {
 
 		const children = object.children;
 
