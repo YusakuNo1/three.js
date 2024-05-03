@@ -103,8 +103,12 @@ class Vector2 {
 
 	copy( v ) {
 
-		this.x = v.x;
-		this.y = v.y;
+		if ( v && v.isVector2 ) {
+
+			this.x = v.x;
+			this.y = v.y;
+
+		}
 
 		return this;
 

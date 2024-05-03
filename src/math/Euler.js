@@ -91,12 +91,16 @@ class Euler {
 
 	copy( euler ) {
 
-		this._x = euler._x;
-		this._y = euler._y;
-		this._z = euler._z;
-		this._order = euler._order;
+		if ( euler !== undefined ) {
 
-		this._onChangeCallback();
+			this._x = euler._x;
+			this._y = euler._y;
+			this._z = euler._z;
+			this._order = euler._order;
+
+			this._onChangeCallback();
+
+		}
 
 		return this;
 
